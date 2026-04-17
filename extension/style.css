@@ -5,19 +5,19 @@
    ============================================================ */
 
 :root {
-  --ink: #1a1613;
-  --paper: #f8f5f0;
-  --warm-gray: #e8e2da;
-  --muted: #9a918a;
-  --accent-amber: #c8713a;
-  --accent-sage: #5a7a62;
-  --accent-slate: #5a6b7a;
-  --accent-rose: #b35a5a;
-  --status-active: #3d7a4a;
-  --status-cooling: #b8892e;
-  --status-abandoned: #b35a5a;
-  --card-bg: #fffdf9;
-  --shadow: rgba(26, 22, 19, 0.06);
+  --ink: #e8e2da;
+  --paper: #131110;
+  --warm-gray: #2e2924;
+  --muted: #7a706a;
+  --accent-amber: #d4834a;
+  --accent-sage: #6a8c72;
+  --accent-slate: #6a7b8a;
+  --accent-rose: #c46a6a;
+  --status-active: #4d8a5a;
+  --status-cooling: #c89a3e;
+  --status-abandoned: #c46a6a;
+  --card-bg: #1c1916;
+  --shadow: rgba(0, 0, 0, 0.35);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -848,7 +848,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 }
 
 .update-banner-btn:hover {
-  background: #4a6952; /* slightly darker sage */
+  background: #577a5e; /* slightly darker sage */
 }
 
 .update-banner-btn:disabled {
@@ -874,7 +874,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 }
 
 .update-banner-dismiss:hover {
-  background: rgba(26, 22, 19, 0.06);
+  background: rgba(255, 255, 255, 0.08);
   color: var(--ink);
 }
 
