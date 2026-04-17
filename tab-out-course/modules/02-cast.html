@@ -1,0 +1,203 @@
+<section class="module" id="module-2" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">Meet the Cast</h1>
+      <p class="module-subtitle">Tab Out is five files. Each one has a distinct personality and a single job.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The file tree -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Five files. One extension.</h2>
+        <p>Think of the Tab Out codebase like a film crew on set — a small, specialized team where each person has one clear role and they can't do each other's jobs.</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder" style="margin-left:0; border-left: none">
+            <span class="ft-name">extension/</span>
+            <span class="ft-desc">The entire Tab Out extension lives here</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">manifest.json</span>
+                <span class="ft-desc">The rulebook — tells Chrome what this extension is and what it's allowed to do</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">background.js</span>
+                <span class="ft-desc">The night watchman — runs silently in the background, keeping the badge updated</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">index.html</span>
+                <span class="ft-desc">The stage — the bare bones structure of the new tab page</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">style.css</span>
+                <span class="ft-desc">The costume department — every color, font, spacing, and animation</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">app.js</span>
+                <span class="ft-desc">The director — reads tabs, makes decisions, orchestrates everything</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: Click the cast — interactive architecture diagram -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Click each file to learn its role</h2>
+
+        <div class="arch-diagram animate-in">
+          <div class="arch-zone">
+            <h4 class="arch-zone-label">Always Running</h4>
+            <div class="arch-component"
+                 data-desc="background.js is a service worker — a script that runs in the background even when no new tab is open. Its only job: count your real web tabs and update the little badge number on the Tab Out icon in the Chrome toolbar. Green badge = under 10 tabs. Amber = 11-20. Red = time to close some.">
+              <div class="arch-icon">🌙</div>
+              <span>background.js</span>
+            </div>
+          </div>
+          <div class="arch-zone">
+            <h4 class="arch-zone-label">The New Tab Page</h4>
+            <div class="arch-component"
+                 data-desc="manifest.json is a JSON config file — like a passport for the extension. It tells Chrome: 'My name is Tab Out, I need permission to read tabs and store data, and when the user opens a new tab, please show my index.html instead of the default blank page.' Without this file, Chrome wouldn't know what to do with the extension at all.">
+              <div class="arch-icon">📋</div>
+              <span>manifest.json</span>
+            </div>
+            <div class="arch-component"
+                 data-desc="index.html is the skeleton — the HTML structure of the new tab page. It defines all the empty containers: the header, the missions grid, the saved-for-later column, the footer. But it's intentionally empty — all the actual content (the tab cards) is injected dynamically by app.js after it reads your open tabs.">
+              <div class="arch-icon">🏗️</div>
+              <span>index.html</span>
+            </div>
+            <div class="arch-component"
+                 data-desc="style.css is the visual identity of Tab Out. It defines every color (warm paper background, amber accent), every font (Newsreader for headings, DM Sans for body), and every animation (the card fade-out, the confetti particles). App.js builds the structure; style.css makes it beautiful.">
+              <div class="arch-icon">🎨</div>
+              <span>style.css</span>
+            </div>
+            <div class="arch-component"
+                 data-desc="app.js is the brain — 1,400+ lines of JavaScript that does everything: asks Chrome for your open tabs, groups them by domain, builds the card HTML, handles every button click, plays the swoosh sound, shoots confetti, saves tabs for later, and maintains the saved-tab checklist. It runs the moment index.html loads.">
+              <div class="arch-icon">🧠</div>
+              <span>app.js</span>
+            </div>
+          </div>
+          <div class="arch-description" id="arch-desc">Click any file above to see what it does</div>
+        </div>
+      </section>
+
+      <!-- Screen 3: manifest.json code translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">manifest.json — the rulebook, decoded</h2>
+        <p>Every Chrome extension starts with a <span class="term" data-definition="A manifest is a formal declaration — a document that says 'here is what I am and here is what I need.' In software, manifest files are configuration files that describe the rules for how something should run.">manifest</span>. It's a <span class="term" data-definition="JSON (JavaScript Object Notation) is a text format for storing structured data. It uses curly braces {} for objects and square brackets [] for lists. It's human-readable and universally understood by software — like a structured form.">JSON</span> file Chrome reads before loading anything else.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-operator">{</span></span>
+<span class="code-line">  <span class="code-property">"manifest_version"</span>: <span class="code-number">3</span>,</span>
+<span class="code-line">  <span class="code-property">"name"</span>: <span class="code-string">"Tab Out"</span>,</span>
+<span class="code-line">  <span class="code-property">"permissions"</span>: [<span class="code-string">"tabs"</span>, <span class="code-string">"activeTab"</span>, <span class="code-string">"storage"</span>],</span>
+<span class="code-line">  <span class="code-property">"chrome_url_overrides"</span>: {</span>
+<span class="code-line">    <span class="code-property">"newtab"</span>: <span class="code-string">"index.html"</span></span>
+<span class="code-line">  },</span>
+<span class="code-line">  <span class="code-property">"background"</span>: {</span>
+<span class="code-line">    <span class="code-property">"service_worker"</span>: <span class="code-string">"background.js"</span></span>
+<span class="code-line">  }</span>
+<span class="code-line"><span class="code-operator">}</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Use the latest version of Chrome extension rules (version 3).</p>
+              <p class="tl">This extension is called "Tab Out".</p>
+              <p class="tl">We need 3 permissions: read all tabs, access the active tab, and save data locally.</p>
+              <p class="tl">Override Chrome's built-in new tab page...</p>
+              <p class="tl">...with our own index.html file.</p>
+              <p class="tl">Also run a background script...</p>
+              <p class="tl">...called background.js, which runs as a service worker (always-on, no visible UI).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info animate-in">
+          <div class="callout-icon">🔑</div>
+          <div class="callout-content">
+            <strong class="callout-title">Permissions = what the extension is allowed to do</strong>
+            <p>When users install Tab Out, Chrome shows a popup asking them to approve these permissions. The extension can only do what's listed here — it can't quietly read your passwords or camera. If you ever want to add a new capability to Tab Out (say, sync tabs across devices), you'd need to add a new permission here first.</p>
+          </div>
+        </div>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">tabs</code>
+            <span class="badge-desc">Read the URL, title, and window of every open tab</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">activeTab</code>
+            <span class="badge-desc">Access the tab the user is currently looking at</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">storage</code>
+            <span class="badge-desc">Save data to the browser between sessions (the "Saved for Later" list)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Quick check</h2>
+
+        <div class="quiz-container" id="quiz-module2">
+
+          <div class="quiz-question-block"
+               data-correct="opt-c"
+               data-explanation-right="app.js is the director — it reads the tab data, groups it, and generates all the card HTML. index.html is just the empty container. The actual tab cards are injected by JavaScript after the page loads."
+               data-explanation-wrong="index.html is the stage (empty structure), style.css is the costume department (look and feel). The logic of reading tabs and building cards is in app.js — that is the file to change.">
+            <h3 class="quiz-question">A user reports that their tabs are being grouped incorrectly — sites from the same company are showing in separate cards. Which file would you tell your AI agent to look at first?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>index.html — the structure of the page</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>style.css — the visual appearance</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>app.js — the logic that groups tabs by domain</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="opt-a"
+               data-explanation-right="The manifest is the first thing Chrome reads. Adding a new permission there is how you unlock a new Chrome API for the extension. Without the permission declared in manifest.json, the API call would fail."
+               data-explanation-wrong="The logic would go in app.js, but app.js can only use APIs it has been granted permission to use. Permissions are declared in manifest.json. You need to add to the manifest first, then write the code in app.js.">
+            <h3 class="quiz-question">You want Tab Out to show a notification when you hit 30 open tabs. Chrome has a Notifications API for this. What is the first file you would need to edit?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>manifest.json — to add the "notifications" permission</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>app.js — to write the notification logic</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>index.html — to add a notification banner to the page</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tab Out — How It Works</title>
+
+  <!-- Google Fonts: Bricolage Grotesque · DM Sans · JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root {
+      --color-accent:       #D4A843;
+      --color-accent-hover: #BF9530;
+      --color-accent-light: #FDF5E0;
+      --color-accent-muted: #E0C070;
+    }
+  </style>
+
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="nav-inner">
+      <span class="nav-title">Tab Out — How It Works</span>
+      <div class="nav-dots" id="nav-dots" role="tablist">
+        <button class="nav-dot" data-target="module-1" data-tooltip="The Magic of New Tab" role="tab" aria-label="Module 1: The Magic of New Tab"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="Meet the Cast" role="tab" aria-label="Module 2: Meet the Cast"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="How Tabs Get Organized" role="tab" aria-label="Module 3: How Tabs Get Organized"></button>
+        <button class="nav-dot" data-target="module-4" data-tooltip="Click, Close, Confetti" role="tab" aria-label="Module 4: Click, Close, Confetti"></button>
+        <button class="nav-dot" data-target="module-5" data-tooltip="Your Tab Memory" role="tab" aria-label="Module 5: Your Tab Memory"></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+<section class="module" id="module-1" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">The Magic of New Tab</h1>
+      <p class="module-subtitle">What Tab Out does, why it exists, and what happens the moment you open a new tab.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: What is Tab Out? -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">You built something pretty clever</h2>
+        <p>Tab Out is a <span class="term" data-definition="A Chrome extension is a small program that runs inside your Chrome browser and can modify how Chrome looks or behaves. Think of it like a plugin or add-on — it lives in the browser, not on a website.">Chrome extension</span> that replaces your boring new tab page with a living dashboard of everything you have open right now — grouped neatly by website, with one-click controls to close entire domains, flag duplicates, and save tabs for later.</p>
+        <p>Most people lose track of tabs the way they lose track of Post-it notes. Tab Out makes the chaos visible and manageable.</p>
+
+        <div class="pattern-cards stagger-children animate-in">
+          <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-accent-light)">🗂️</div>
+            <h4 class="pattern-title">Groups by domain</h4>
+            <p class="pattern-desc">All your GitHub tabs in one card. All your YouTube tabs in another. No more hunting.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-info-light)">🔇</div>
+            <h4 class="pattern-title">Swoosh &amp; confetti</h4>
+            <p class="pattern-desc">Closing a group plays a satisfying sound and bursts confetti. Closing tabs has never felt so good.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-success-light)">📌</div>
+            <h4 class="pattern-title">Save for later</h4>
+            <p class="pattern-desc">Bookmark a tab to a checklist before closing it. No server, no account — stored right in your browser.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: The magic moment — data flow animation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What happens when you open a new tab?</h2>
+        <p>From the moment you press <strong>⌘T</strong>, a tiny chain of events fires in milliseconds. Click through each step to see who does what.</p>
+
+        <div class="flow-animation" data-steps='[
+          {"highlight":"flow-actor-1","label":"You press Cmd+T. Chrome opens a new tab."},
+          {"highlight":"flow-actor-2","label":"Chrome checks manifest.json — Tab Out declared this page as the new tab override, so it loads index.html instead of the default blank page.","packet":true,"from":"actor-1","to":"actor-2"},
+          {"highlight":"flow-actor-3","label":"index.html loads style.css (the look) and app.js (the brain).","packet":true,"from":"actor-2","to":"actor-3"},
+          {"highlight":"flow-actor-4","label":"app.js calls chrome.tabs.query() — asking Chrome for a list of every open tab across all windows.","packet":true,"from":"actor-3","to":"actor-4"},
+          {"highlight":"flow-actor-4","label":"Chrome replies with the full tab list: URLs, titles, window IDs."},
+          {"highlight":"flow-actor-3","label":"app.js groups the tabs by domain, builds the HTML cards, and injects them into the page.","packet":true,"from":"actor-4","to":"actor-3"},
+          {"highlight":"flow-actor-1","label":"You see your tabs, beautifully organized. The whole thing took under 50ms."}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon">👤</div>
+              <span>You</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon">📋</div>
+              <span>manifest.json</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon">🧠</div>
+              <span>app.js</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon">🌐</div>
+              <span>Chrome API</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+          <div class="flow-step-label" id="flow-label">Click "Next Step" to begin</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">Next Step →</button>
+            <button class="btn flow-reset-btn">Restart</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: Why no server? -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">100% local — no server, no account</h2>
+        <p>Most apps you build need a server running somewhere in the cloud. Tab Out has zero backend. It talks directly to <span class="term" data-definition="An API (Application Programming Interface) is a set of rules that lets one piece of software talk to another. Chrome exposes APIs that let extensions read your tabs, store data, and more — like a set of pre-built tools Chrome hands to the extension.">Chrome's built-in APIs</span> to do everything.</p>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Key Insight: Not every app needs a server</strong>
+            <p>Browser extensions live inside Chrome and get special privileges — they can read tabs, store data, and modify pages without ever touching the internet. This makes them fast, private, and free to run. When you ask an AI to build your next tool, ask yourself: "Does this actually need a backend, or can it run entirely in the browser?"</p>
+          </div>
+        </div>
+
+        <div class="step-cards animate-in">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Read open tabs</strong>
+              <p>Via <code style="font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-accent)">chrome.tabs.query()</code> — Chrome hands over the full tab list instantly.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Save data between sessions</strong>
+              <p>Via <code style="font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-accent)">chrome.storage.local</code> — a tiny key-value store built into Chrome, no database needed.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Play sounds</strong>
+              <p>Via the <span class="term" data-definition="The Web Audio API is a set of tools built into every browser that lets you create and manipulate sound programmatically — without needing audio files. Tab Out uses it to generate the swoosh sound from scratch using math.">Web Audio API</span> — generates the swoosh sound mathematically, no MP3 files needed.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Quick check</h2>
+
+        <div class="quiz-container" id="quiz-module1">
+          <div class="quiz-question-block"
+               data-correct="opt-b"
+               data-explanation-right="Chrome loads the extension page instead of its own blank new-tab page. manifest.json is what tells Chrome to do the swap — it declares Tab Out as the new-tab override."
+               data-explanation-wrong="The extension page does load, but it replaces the blank page entirely — it does not sit alongside it. Try again and think about what manifest.json declares.">
+            <h3 class="quiz-question">When you press ⌘T in Chrome with Tab Out installed, what actually happens?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Chrome opens its default new tab page, and Tab Out injects itself on top of it.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Chrome loads Tab Out's index.html instead of its own blank new tab page.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Tab Out polls a remote server for your tab data and renders the response.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="opt-b"
+               data-explanation-right="Exactly — chrome.storage.local is a built-in browser database, no server required. This is a common pattern in extensions: use browser-native storage instead of spinning up a backend."
+               data-explanation-wrong="Tab Out has no server or cloud database. The &quot;Saved for Later&quot; data lives entirely in the browser via chrome.storage.local. This is what keeps it free and private.">
+            <h3 class="quiz-question">You want to add a &quot;notes&quot; feature to Tab Out where users can jot down a quick note per domain. Where would the notes live?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A cloud database you set up on a server somewhere.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>chrome.storage.local — the same browser-native storage already used by the extension.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A text file on the user's desktop that the extension reads and writes.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-2" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">Meet the Cast</h1>
+      <p class="module-subtitle">Tab Out is five files. Each one has a distinct personality and a single job.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The file tree -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Five files. One extension.</h2>
+        <p>Think of the Tab Out codebase like a film crew on set — a small, specialized team where each person has one clear role and they can't do each other's jobs.</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder" style="margin-left:0; border-left: none">
+            <span class="ft-name">extension/</span>
+            <span class="ft-desc">The entire Tab Out extension lives here</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">manifest.json</span>
+                <span class="ft-desc">The rulebook — tells Chrome what this extension is and what it's allowed to do</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">background.js</span>
+                <span class="ft-desc">The night watchman — runs silently in the background, keeping the badge updated</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">index.html</span>
+                <span class="ft-desc">The stage — the bare bones structure of the new tab page</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">style.css</span>
+                <span class="ft-desc">The costume department — every color, font, spacing, and animation</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">app.js</span>
+                <span class="ft-desc">The director — reads tabs, makes decisions, orchestrates everything</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: Click the cast — interactive architecture diagram -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Click each file to learn its role</h2>
+
+        <div class="arch-diagram animate-in">
+          <div class="arch-zone">
+            <h4 class="arch-zone-label">Always Running</h4>
+            <div class="arch-component"
+                 data-desc="background.js is a service worker — a script that runs in the background even when no new tab is open. Its only job: count your real web tabs and update the little badge number on the Tab Out icon in the Chrome toolbar. Green badge = under 10 tabs. Amber = 11-20. Red = time to close some.">
+              <div class="arch-icon">🌙</div>
+              <span>background.js</span>
+            </div>
+          </div>
+          <div class="arch-zone">
+            <h4 class="arch-zone-label">The New Tab Page</h4>
+            <div class="arch-component"
+                 data-desc="manifest.json is a JSON config file — like a passport for the extension. It tells Chrome: 'My name is Tab Out, I need permission to read tabs and store data, and when the user opens a new tab, please show my index.html instead of the default blank page.' Without this file, Chrome wouldn't know what to do with the extension at all.">
+              <div class="arch-icon">📋</div>
+              <span>manifest.json</span>
+            </div>
+            <div class="arch-component"
+                 data-desc="index.html is the skeleton — the HTML structure of the new tab page. It defines all the empty containers: the header, the missions grid, the saved-for-later column, the footer. But it's intentionally empty — all the actual content (the tab cards) is injected dynamically by app.js after it reads your open tabs.">
+              <div class="arch-icon">🏗️</div>
+              <span>index.html</span>
+            </div>
+            <div class="arch-component"
+                 data-desc="style.css is the visual identity of Tab Out. It defines every color (warm paper background, amber accent), every font (Newsreader for headings, DM Sans for body), and every animation (the card fade-out, the confetti particles). App.js builds the structure; style.css makes it beautiful.">
+              <div class="arch-icon">🎨</div>
+              <span>style.css</span>
+            </div>
+            <div class="arch-component"
+                 data-desc="app.js is the brain — 1,400+ lines of JavaScript that does everything: asks Chrome for your open tabs, groups them by domain, builds the card HTML, handles every button click, plays the swoosh sound, shoots confetti, saves tabs for later, and maintains the saved-tab checklist. It runs the moment index.html loads.">
+              <div class="arch-icon">🧠</div>
+              <span>app.js</span>
+            </div>
+          </div>
+          <div class="arch-description" id="arch-desc">Click any file above to see what it does</div>
+        </div>
+      </section>
+
+      <!-- Screen 3: manifest.json code translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">manifest.json — the rulebook, decoded</h2>
+        <p>Every Chrome extension starts with a <span class="term" data-definition="A manifest is a formal declaration — a document that says 'here is what I am and here is what I need.' In software, manifest files are configuration files that describe the rules for how something should run.">manifest</span>. It's a <span class="term" data-definition="JSON (JavaScript Object Notation) is a text format for storing structured data. It uses curly braces {} for objects and square brackets [] for lists. It's human-readable and universally understood by software — like a structured form.">JSON</span> file Chrome reads before loading anything else.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-operator">{</span></span>
+<span class="code-line">  <span class="code-property">"manifest_version"</span>: <span class="code-number">3</span>,</span>
+<span class="code-line">  <span class="code-property">"name"</span>: <span class="code-string">"Tab Out"</span>,</span>
+<span class="code-line">  <span class="code-property">"permissions"</span>: [<span class="code-string">"tabs"</span>, <span class="code-string">"activeTab"</span>, <span class="code-string">"storage"</span>],</span>
+<span class="code-line">  <span class="code-property">"chrome_url_overrides"</span>: {</span>
+<span class="code-line">    <span class="code-property">"newtab"</span>: <span class="code-string">"index.html"</span></span>
+<span class="code-line">  },</span>
+<span class="code-line">  <span class="code-property">"background"</span>: {</span>
+<span class="code-line">    <span class="code-property">"service_worker"</span>: <span class="code-string">"background.js"</span></span>
+<span class="code-line">  }</span>
+<span class="code-line"><span class="code-operator">}</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Use the latest version of Chrome extension rules (version 3).</p>
+              <p class="tl">This extension is called "Tab Out".</p>
+              <p class="tl">We need 3 permissions: read all tabs, access the active tab, and save data locally.</p>
+              <p class="tl">Override Chrome's built-in new tab page...</p>
+              <p class="tl">...with our own index.html file.</p>
+              <p class="tl">Also run a background script...</p>
+              <p class="tl">...called background.js, which runs as a service worker (always-on, no visible UI).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info animate-in">
+          <div class="callout-icon">🔑</div>
+          <div class="callout-content">
+            <strong class="callout-title">Permissions = what the extension is allowed to do</strong>
+            <p>When users install Tab Out, Chrome shows a popup asking them to approve these permissions. The extension can only do what's listed here — it can't quietly read your passwords or camera. If you ever want to add a new capability to Tab Out (say, sync tabs across devices), you'd need to add a new permission here first.</p>
+          </div>
+        </div>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">tabs</code>
+            <span class="badge-desc">Read the URL, title, and window of every open tab</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">activeTab</code>
+            <span class="badge-desc">Access the tab the user is currently looking at</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">storage</code>
+            <span class="badge-desc">Save data to the browser between sessions (the "Saved for Later" list)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Quick check</h2>
+
+        <div class="quiz-container" id="quiz-module2">
+
+          <div class="quiz-question-block"
+               data-correct="opt-c"
+               data-explanation-right="app.js is the director — it reads the tab data, groups it, and generates all the card HTML. index.html is just the empty container. The actual tab cards are injected by JavaScript after the page loads."
+               data-explanation-wrong="index.html is the stage (empty structure), style.css is the costume department (look and feel). The logic of reading tabs and building cards is in app.js — that is the file to change.">
+            <h3 class="quiz-question">A user reports that their tabs are being grouped incorrectly — sites from the same company are showing in separate cards. Which file would you tell your AI agent to look at first?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>index.html — the structure of the page</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>style.css — the visual appearance</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>app.js — the logic that groups tabs by domain</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="opt-a"
+               data-explanation-right="The manifest is the first thing Chrome reads. Adding a new permission there is how you unlock a new Chrome API for the extension. Without the permission declared in manifest.json, the API call would fail."
+               data-explanation-wrong="The logic would go in app.js, but app.js can only use APIs it has been granted permission to use. Permissions are declared in manifest.json. You need to add to the manifest first, then write the code in app.js.">
+            <h3 class="quiz-question">You want Tab Out to show a notification when you hit 30 open tabs. Chrome has a Notifications API for this. What is the first file you would need to edit?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>manifest.json — to add the "notifications" permission</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>app.js — to write the notification logic</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>index.html — to add a notification banner to the page</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-3" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">How Tabs Get Organized</h1>
+      <p class="module-subtitle">The sorting algorithm that turns a chaotic list of URLs into clean, grouped domain cards.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The raw problem -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Chrome gives you a flat list. Tab Out makes it useful.</h2>
+        <p>When app.js asks Chrome for your open tabs, it gets back a flat pile of objects — every tab in every window, in no particular order. Imagine dumping 40 tabs on the floor.</p>
+        <p>The grouping logic in app.js is like a very fast librarian: it sorts everything by domain in milliseconds, with two special rules that make Tab Out genuinely useful.</p>
+
+        <div class="pattern-cards stagger-children animate-in">
+          <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-info-light)">🏠</div>
+            <h4 class="pattern-title">Landing Pages get their own group</h4>
+            <p class="pattern-desc">Gmail inbox, Twitter home, YouTube home — these "homepage" tabs are pulled out into their own "Homepages" card, separate from your actual work tabs on those same sites.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-success-light)">🔗</div>
+            <h4 class="pattern-title">Custom groups let you merge domains</h4>
+            <p class="pattern-desc">You can configure rules to group related domains together — like merging all Notion subdomains into one card. Defined in a personal config file that isn't shared.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: The grouping code translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The heart of the grouping logic</h2>
+        <p>This is the loop that sorts every open tab into its bucket. It runs inside <code style="font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-accent)">renderStaticDashboard()</code> in app.js.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">for</span> (<span class="code-keyword">const</span> tab <span class="code-keyword">of</span> realTabs) {</span>
+<span class="code-line">  <span class="code-keyword">try</span> {</span>
+<span class="code-line">    <span class="code-keyword">if</span> (<span class="code-function">isLandingPage</span>(tab.url)) {</span>
+<span class="code-line">      landingTabs.<span class="code-function">push</span>(tab);</span>
+<span class="code-line">      <span class="code-keyword">continue</span>;</span>
+<span class="code-line">    }</span>
+<span class="code-line">    <span class="code-keyword">const</span> hostname = <span class="code-keyword">new</span> <span class="code-function">URL</span>(tab.url).hostname;</span>
+<span class="code-line">    <span class="code-keyword">if</span> (!groupMap[hostname]) {</span>
+<span class="code-line">      groupMap[hostname] = { <span class="code-property">domain</span>: hostname, <span class="code-property">tabs</span>: [] };</span>
+<span class="code-line">    }</span>
+<span class="code-line">    groupMap[hostname].tabs.<span class="code-function">push</span>(tab);</span>
+<span class="code-line">  } <span class="code-keyword">catch</span> { <span class="code-comment">/* skip malformed URLs */</span> }</span>
+<span class="code-line">}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Go through every real tab one by one.</p>
+              <p class="tl">Try to process it (some URLs are weird and will crash — catch those).</p>
+              <p class="tl">Is this a "homepage" URL (Gmail inbox, YouTube home, etc.)?</p>
+              <p class="tl">If yes, add it to the special landing-pages pile...</p>
+              <p class="tl">...and skip to the next tab.</p>
+              <p class="tl">Otherwise, extract the domain from the URL (e.g. "github.com" from a long URL).</p>
+              <p class="tl">If we haven't seen this domain before, create a new bucket for it.</p>
+              <p class="tl">Either way, add this tab to that domain's bucket.</p>
+              <p class="tl">If the URL is broken, quietly skip it.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">This pattern is called "bucketing"</strong>
+            <p>Sorting items into named buckets is one of the most common patterns in programming. You've seen it in analytics (sessions grouped by country), in finance (transactions grouped by category), and in email clients (messages grouped by sender). Whenever you need to transform a flat list into groups, reach for this pattern.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: isLandingPage code translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How it knows "this is a homepage"</h2>
+        <p>The <code style="font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-accent)">isLandingPage()</code> <span class="term" data-definition="A function is a named block of code that performs a specific task. You call it by name, it runs, and it gives you back a result. Think of it like a vending machine — you press B3 (the function name), it does its thing, and out comes a result.">function</span> checks each URL against a list of known homepage patterns. It has to be specific — closing "Gmail inbox" shouldn't also close threads you have open in Gmail.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> LANDING_PAGE_PATTERNS = [</span>
+<span class="code-line">  { <span class="code-property">hostname</span>: <span class="code-string">'mail.google.com'</span>, <span class="code-property">test</span>: (p, h) =></span>
+<span class="code-line">      !h.<span class="code-function">includes</span>(<span class="code-string">'#inbox/'</span>) && !h.<span class="code-function">includes</span>(<span class="code-string">'#sent/'</span>) },</span>
+<span class="code-line">  { <span class="code-property">hostname</span>: <span class="code-string">'x.com'</span>, <span class="code-property">pathExact</span>: [<span class="code-string">'/home'</span>] },</span>
+<span class="code-line">  { <span class="code-property">hostname</span>: <span class="code-string">'github.com'</span>, <span class="code-property">pathExact</span>: [<span class="code-string">'/'</span>] },</span>
+<span class="code-line">];</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">A list of "these are homepage URLs" rules.</p>
+              <p class="tl">Rule 1: Gmail — it IS a homepage, UNLESS the URL contains an email thread ID (those are content, not the inbox).</p>
+              <p class="tl">Rule 2: X.com — only the /home path is the homepage. Profiles and posts are not.</p>
+              <p class="tl">Rule 3: GitHub — only the root "/" is the homepage. Repos and issues are content.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Drag and Drop — match files to responsibilities -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Match each concept to what it means</h2>
+        <p>Drag each term to its correct description. This tests whether you understood what you just read.</p>
+
+        <div class="dnd-container" id="dnd-module3">
+          <div class="dnd-chips">
+            <div class="dnd-chip" draggable="true" data-answer="hostname">hostname</div>
+            <div class="dnd-chip" draggable="true" data-answer="groupmap">groupMap</div>
+            <div class="dnd-chip" draggable="true" data-answer="landing">landingTabs</div>
+            <div class="dnd-chip" draggable="true" data-answer="realTabs">realTabs</div>
+          </div>
+          <div class="dnd-zones">
+            <div class="dnd-zone" data-correct="realTabs">
+              <p class="dnd-zone-label">The filtered list of tabs — no chrome:// pages, no extension pages, only real websites.</p>
+              <div class="dnd-zone-target">Drop here</div>
+            </div>
+            <div class="dnd-zone" data-correct="landing">
+              <p class="dnd-zone-label">The pile of inbox/homepage tabs that get their own "Homepages" card.</p>
+              <div class="dnd-zone-target">Drop here</div>
+            </div>
+            <div class="dnd-zone" data-correct="hostname">
+              <p class="dnd-zone-label">The domain part of a URL — e.g. "github.com" from "https://github.com/user/repo/issues/42".</p>
+              <div class="dnd-zone-target">Drop here</div>
+            </div>
+            <div class="dnd-zone" data-correct="groupmap">
+              <p class="dnd-zone-label">The collection of buckets — one per domain — that accumulates tabs as the loop runs.</p>
+              <div class="dnd-zone-target">Drop here</div>
+            </div>
+          </div>
+          <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3)">
+            <button class="btn btn-primary" onclick="checkDnD('dnd-module3')">Check Matches</button>
+            <button class="btn" onclick="resetDnD('dnd-module3')">Reset</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-4" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">Click, Close, Confetti</h1>
+      <p class="module-subtitle">How one listener handles every button in the app — and why the swoosh sounds so satisfying.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: Event delegation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">One guard for the whole building</h2>
+        <p>Tab Out has dozens of buttons — close group, close single tab, save for later, close duplicates, expand overflow. Naively, you'd put a <span class="term" data-definition="An event listener is a piece of code that waits for something to happen (a click, a keypress, a scroll) and then runs when it does. It is attached to a specific element on the page.">event listener</span> on every single button. Tab Out doesn't — it uses one listener on the entire document.</p>
+        <p>This pattern is called <strong>event delegation</strong>. Think of it like building security: instead of a guard at every door, there's one guard in the lobby who watches everyone who walks in and checks their badge.</p>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Event delegation — why it matters for you</strong>
+            <p>Since Tab Out generates card HTML dynamically (new buttons appear whenever tabs are read), you can't attach listeners to buttons that don't exist yet. Event delegation solves this: the listener is on the document, which always exists. When you describe interactive UIs to AI, say "use event delegation so listeners survive dynamic content re-renders."</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: Chat animation — what happens when you click "Close all" -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What happens when you click "Close all tabs"?</h2>
+        <p>Watch the conversation between you, the document listener, and the Chrome API when you click a close button.</p>
+
+        <div class="chat-window" id="chat-module4">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="user" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">👤</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">You</span>
+                <p>I click "Close all 5 tabs" on the GitHub card.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="1" data-sender="listener" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">👂</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">Document Listener</span>
+                <p>Click detected! Walking up the DOM tree... found data-action="close-domain-tabs" on the button. Handing off to the right handler.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="2" data-sender="appjs" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">🧠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">app.js</span>
+                <p>Got it. Looking up the group by domain ID, collecting the 5 tab URLs. Calling closeTabsByUrls()...</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="3" data-sender="chrome" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-5)">🌐</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-5)">Chrome API</span>
+                <p>chrome.tabs.remove() received. Closing tab IDs 101, 102, 103, 104, 105... done.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="4" data-sender="appjs" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">🧠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">app.js</span>
+                <p>Playing the swoosh sound, animating the card out, shooting confetti. Done.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="5" data-sender="user" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">👤</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">You</span>
+                <p>*satisfying swoosh* The card is gone. Feels great.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" id="chat-module4-typing" style="display:none">
+            <div class="chat-avatar" id="chat-module4-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">Next Message</button>
+            <button class="btn chat-all-btn">Play All</button>
+            <button class="btn chat-reset-btn">Replay</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: The event handler code translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The single click handler — decoded</h2>
+        <p>One <span class="term" data-definition="A function is a named block of code that runs when called. An async function is one that can pause and wait for slow operations (like asking Chrome to close tabs) without freezing the rest of the page.">async function</span> handles every button click in Tab Out. Here is how it decides what to do.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">document</span>.<span class="code-function">addEventListener</span>(<span class="code-string">'click'</span>, <span class="code-keyword">async</span> (e) => {</span>
+<span class="code-line">  <span class="code-keyword">const</span> actionEl = e.target.<span class="code-function">closest</span>(<span class="code-string">'[data-action]'</span>);</span>
+<span class="code-line">  <span class="code-keyword">if</span> (!actionEl) <span class="code-keyword">return</span>;</span>
+<span class="code-line">  <span class="code-keyword">const</span> action = actionEl.dataset.action;</span>
+<span class="code-line">  <span class="code-keyword">if</span> (action === <span class="code-string">'close-domain-tabs'</span>) {</span>
+<span class="code-line">    <span class="code-comment">/* ... close all tabs in group */</span></span>
+<span class="code-line">  }</span>
+<span class="code-line">  <span class="code-keyword">if</span> (action === <span class="code-string">'close-single-tab'</span>) {</span>
+<span class="code-line">    <span class="code-comment">/* ... close just one tab */</span></span>
+<span class="code-line">  }</span>
+<span class="code-line">});</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Listen for ANY click anywhere in the document.</p>
+              <p class="tl">Walk up the DOM from where the user clicked, looking for an element with a "data-action" label.</p>
+              <p class="tl">If we found nothing with a data-action label, this click isn't meant for us — ignore it.</p>
+              <p class="tl">Read the action name from the element's data attribute.</p>
+              <p class="tl">If the action is "close all tabs in a domain group"...</p>
+              <p class="tl">...run the close-group logic.</p>
+              <p class="tl">If the action is "close just this one tab"...</p>
+              <p class="tl">...run the single-tab-close logic.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: The swoosh sound — Web Audio API -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How the swoosh sound is made — from scratch</h2>
+        <p>Tab Out plays a sound when you close tabs, but there is no MP3 file anywhere in the codebase. The sound is <em>generated mathematically</em> using the <span class="term" data-definition="The Web Audio API is a built-in browser tool for creating and shaping sound programmatically. It works like a modular synthesizer: you connect audio nodes together in a chain, each one shaping the sound, and pipe the result to your speakers.">Web Audio API</span> — every time, in real time.</p>
+        <p>Think of it like the difference between playing a recording of a piano versus simulating the physics of a piano string. Tab Out does the latter.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> ctx = <span class="code-keyword">new</span> AudioContext();</span>
+<span class="code-line"><span class="code-keyword">const</span> buffer = ctx.<span class="code-function">createBuffer</span>(<span class="code-number">1</span>, ctx.sampleRate * <span class="code-number">0.25</span>, ctx.sampleRate);</span>
+<span class="code-line"><span class="code-keyword">const</span> data = buffer.<span class="code-function">getChannelData</span>(<span class="code-number">0</span>);</span>
+<span class="code-line"><span class="code-keyword">for</span> (<span class="code-keyword">let</span> i = <span class="code-number">0</span>; i < data.length; i++) {</span>
+<span class="code-line">  <span class="code-keyword">const</span> pos = i / data.length;</span>
+<span class="code-line">  <span class="code-keyword">const</span> env = pos < <span class="code-number">0.1</span> ? pos / <span class="code-number">0.1</span> : Math.<span class="code-function">pow</span>(<span class="code-number">1</span> - (pos - <span class="code-number">0.1</span>) / <span class="code-number">0.9</span>, <span class="code-number">1.5</span>);</span>
+<span class="code-line">  data[i] = (Math.<span class="code-function">random</span>() * <span class="code-number">2</span> - <span class="code-number">1</span>) * env;</span>
+<span class="code-line">}</span>
+<span class="code-line"><span class="code-keyword">const</span> filter = ctx.<span class="code-function">createBiquadFilter</span>();</span>
+<span class="code-line">filter.frequency.<span class="code-function">setValueAtTime</span>(<span class="code-number">4000</span>, t);</span>
+<span class="code-line">filter.frequency.<span class="code-function">exponentialRampToValueAtTime</span>(<span class="code-number">400</span>, t + <span class="code-number">0.25</span>);</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Open an audio processing context (like turning on the synthesizer).</p>
+              <p class="tl">Create 0.25 seconds of blank audio memory — a canvas for our sound.</p>
+              <p class="tl">Get access to the raw audio samples in that memory.</p>
+              <p class="tl">Loop through every single audio sample (there are thousands).</p>
+              <p class="tl">Calculate how far through the sound we are (0 = start, 1 = end).</p>
+              <p class="tl">Build an envelope shape: ramp UP fast in the first 10%, then fade out smoothly. This gives the "whoosh" feel.</p>
+              <p class="tl">Fill each sample with random noise, shaped by that envelope.</p>
+              <p class="tl">Create a frequency filter (like a tone knob on a stereo).</p>
+              <p class="tl">Start the filter at 4000Hz (high, bright, airy)...</p>
+              <p class="tl">...and sweep it down to 400Hz over 0.25 seconds. This is the "swoosh" — high to low.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info animate-in">
+          <div class="callout-icon">🎵</div>
+          <div class="callout-content">
+            <strong class="callout-title">Sound as math — a transferable superpower</strong>
+            <p>The Web Audio API is available in every browser. Any web app you build — not just extensions — can generate custom sounds without audio files. Notification sounds, game audio, UI feedback — all doable in pure JavaScript. Next time you need a sound effect, ask your AI: "generate this using the Web Audio API, no audio files."</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Quick check</h2>
+
+        <div class="quiz-container" id="quiz-module4">
+          <div class="quiz-question-block"
+               data-correct="opt-b"
+               data-explanation-right="Event delegation is exactly the right tool here. You put one listener on the container, and use a data attribute (like data-action='add-to-cart') to distinguish which action to take. This works even as products are dynamically loaded — new buttons automatically work because the container already has the listener."
+               data-explanation-wrong="Adding a listener to every button sounds right but breaks as soon as the page adds new products dynamically — those new buttons won't have listeners. Event delegation is the right pattern for dynamic content.">
+            <h3 class="quiz-question">You are building a product page where users can click "Add to Cart" on any item. New products load dynamically as the user scrolls. What pattern should you use for the button interactions?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Attach a click listener to every "Add to Cart" button individually when the page loads.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>One click listener on the product list container, checking data-action to route to the right handler.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Re-scan and re-attach listeners every time new products load.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="opt-c"
+               data-explanation-right="The data-action attribute is the routing mechanism. The single document listener reads it to know which handler to call. This is the whole point of the pattern — data attributes carry the intent, the listener reads the intent."
+               data-explanation-wrong="The class names are for styling, not routing. The document listener uses data-action attributes (like data-action='close-domain-tabs') to decide which handler to call. That is the mechanism that makes one listener serve many purposes.">
+            <h3 class="quiz-question">In Tab Out, how does the single document-level click listener know whether the user clicked "close all tabs" vs "save for later"?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It reads the button's CSS class name to figure out the intent.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>There are actually multiple listeners, one per action type.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It walks up the DOM from the click target looking for a data-action attribute.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-5" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">Your Tab Memory</h1>
+      <p class="module-subtitle">How Tab Out remembers your saved tabs across sessions — without any server or database.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The concept -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A library card catalog, built into your browser</h2>
+        <p>When you click the bookmark icon on a tab, Tab Out needs to remember it — even after you close the browser and come back tomorrow. Normally this would require a server and a database.</p>
+        <p>Tab Out uses <code style="font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-accent)">chrome.storage.local</code> instead — a tiny <span class="term" data-definition="A key-value store is the simplest kind of database. You store data under a label (the key), and retrieve it by that label. Like a library card catalog: the card label is the key, the card contents are the value.">key-value store</span> that Chrome manages for each extension. No servers, no accounts, no monthly bills.</p>
+
+        <div class="icon-rows stagger-children animate-in">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-1)">💾</div>
+            <div>
+              <strong>Persists across sessions</strong>
+              <p>Data survives browser restarts. Your saved tabs are still there Monday morning.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🔒</div>
+            <div>
+              <strong>Private by design</strong>
+              <p>Stored locally on your machine. Tab Out has no idea what you saved — no data ever leaves Chrome.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-5)">⚡</div>
+            <div>
+              <strong>Instant reads and writes</strong>
+              <p>No network round-trip. Saving a tab is as fast as writing to memory.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: The data shape -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What gets stored — and how</h2>
+        <p>Everything lives under a single key called <code style="font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-accent)">"deferred"</code>. The value is an <span class="term" data-definition="An array is an ordered list. In JavaScript, you write it with square brackets: [item1, item2, item3]. Each item can be a number, a string, or a complex object with many fields.">array</span> of saved tab objects, each with a handful of fields.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">async</span> <span class="code-keyword">function</span> <span class="code-function">saveTabForLater</span>(tab) {</span>
+<span class="code-line">  <span class="code-keyword">const</span> { deferred = [] } =</span>
+<span class="code-line">    <span class="code-keyword">await</span> chrome.storage.local.<span class="code-function">get</span>(<span class="code-string">'deferred'</span>);</span>
+<span class="code-line">  deferred.<span class="code-function">push</span>({</span>
+<span class="code-line">    <span class="code-property">id</span>:        Date.<span class="code-function">now</span>().<span class="code-function">toString</span>(),</span>
+<span class="code-line">    <span class="code-property">url</span>:       tab.url,</span>
+<span class="code-line">    <span class="code-property">title</span>:     tab.title,</span>
+<span class="code-line">    <span class="code-property">savedAt</span>:   <span class="code-keyword">new</span> <span class="code-function">Date</span>().<span class="code-function">toISOString</span>(),</span>
+<span class="code-line">    <span class="code-property">completed</span>: <span class="code-keyword">false</span>,</span>
+<span class="code-line">    <span class="code-property">dismissed</span>: <span class="code-keyword">false</span>,</span>
+<span class="code-line">  });</span>
+<span class="code-line">  <span class="code-keyword">await</span> chrome.storage.local.<span class="code-function">set</span>({ deferred });</span>
+<span class="code-line">}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Define a function that saves one tab for later.</p>
+              <p class="tl">Read the current saved-tabs list from storage. If nothing is stored yet, start with an empty list.</p>
+              <p class="tl">Add a new item to the list, with these fields:</p>
+              <p class="tl">A unique ID — just the current timestamp (milliseconds since 1970). Good enough as a unique number.</p>
+              <p class="tl">The tab's URL — where it points.</p>
+              <p class="tl">The tab's title — what to show in the checklist.</p>
+              <p class="tl">When it was saved — stored as an ISO date string (e.g. "2026-04-16T10:00:00Z").</p>
+              <p class="tl">completed: false — not checked off yet.</p>
+              <p class="tl">dismissed: false — not removed yet.</p>
+              <p class="tl">Write the updated list back to storage. Done — it will survive a browser restart.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: The three states -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Three states, two flags</h2>
+        <p>Every saved tab moves through a simple lifecycle, controlled by just two <span class="term" data-definition="A boolean flag is a true/false variable used to track state. The word 'flag' comes from physical flags raised to signal a status — a flag is up (true) or down (false).">boolean flags</span>: <code style="font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-accent)">completed</code> and <code style="font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-accent)">dismissed</code>.</p>
+
+        <div class="step-cards animate-in">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Active — <code style="font-size:var(--text-xs);font-family:var(--font-mono)">completed: false, dismissed: false</code></strong>
+              <p>The tab appears in the checklist. The user can read it, check it off, or dismiss it.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Archived — <code style="font-size:var(--text-xs);font-family:var(--font-mono)">completed: true, dismissed: false</code></strong>
+              <p>The user checked off the tab. It moves to the collapsible archive section. Still retrievable.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Gone — <code style="font-size:var(--text-xs);font-family:var(--font-mono)">dismissed: true</code></strong>
+              <p>The user clicked X. The tab is hidden from all views. Still in storage, but filtered out everywhere.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Soft delete — never destroy data you might need</strong>
+            <p>Notice that Tab Out never actually removes items from the storage array — it just sets a flag. This is called a "soft delete" pattern. The benefit: you can add an "Undo" feature later, or an analytics view, without needing to reconstruct lost data. When you describe deletion features to AI, ask for soft delete unless you truly need hard delete.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Final quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Final check — put it all together</h2>
+
+        <div class="quiz-container" id="quiz-module5">
+
+          <div class="quiz-question-block"
+               data-correct="opt-b"
+               data-explanation-right="chrome.storage.local is exactly right. It persists across restarts, is private to the extension, and requires zero backend. The pattern in Tab Out is the template: read the array, push a new item, write it back."
+               data-explanation-wrong="A server database would work but is overkill — it adds cost, setup time, and a privacy concern. Tab Out shows that chrome.storage.local handles this use case perfectly. Start simple before adding infrastructure.">
+            <h3 class="quiz-question">You want to add a "reading list" feature to Tab Out — articles saved by the user, persisting even after Chrome restarts. Where should the data live?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A cloud database (like Supabase or Firebase) so the reading list syncs across devices.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>chrome.storage.local — same as the existing Saved for Later feature, already proven to work.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A JavaScript variable in app.js — fast and simple.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="opt-a"
+               data-explanation-right="The dismissed flag is set to true, which filters the item from all views — but the record stays in the array. This is soft delete. You could add an &quot;undo dismiss&quot; feature by resetting the flag to false."
+               data-explanation-wrong="Tab Out never removes items from the storage array — it only flips the dismissed flag to true, which hides the item from all views. This means a dismissed item can be un-dismissed if you add that feature. The data is never truly gone.">
+            <h3 class="quiz-question">A user clicks the X button to dismiss a saved tab. Looking at the code, what actually happens in storage?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The item stays in the array with dismissed set to true — it is filtered from all views but not deleted.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The item is removed from the storage array immediately and permanently.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The entire "deferred" key is deleted and rebuilt from scratch without the dismissed item.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="opt-b"
+               data-explanation-right="background.js is the service worker — it runs independently even when no new tab is open. The badge update logic lives there because it needs to fire on tab events (created, removed, updated) regardless of whether the dashboard page is visible."
+               data-explanation-wrong="app.js only runs when the new tab page is open. If the user never opens a new tab, app.js never runs — so it cannot update the badge. The badge counter is the job of background.js, which runs as a service worker and fires on Chrome tab events.">
+            <h3 class="quiz-question">You want the toolbar badge to show a live tab count. The count must update even when the user never opens a new tab. Which file should contain this logic?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>app.js — it already manages all the tab data.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>background.js — it runs as a service worker, always on, independent of the new tab page.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>index.html — via an inline script that polls for tab changes.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module5')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module5')">Try Again</button>
+        </div>
+
+        <div class="callout callout-info animate-in" style="margin-top: var(--space-12)">
+          <div class="callout-icon">🎓</div>
+          <div class="callout-content">
+            <strong class="callout-title">You now understand Tab Out end-to-end</strong>
+            <p>You know how Chrome loads the extension, how tabs are read and grouped, how clicks are handled with a single listener, how sounds are generated from math, and how data persists without a server. That is the full picture — five files, zero backend, one clean idea per file.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+  </main>
+
+</body>
+</html>

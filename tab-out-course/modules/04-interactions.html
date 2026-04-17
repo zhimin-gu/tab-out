@@ -1,0 +1,238 @@
+<section class="module" id="module-4" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">Click, Close, Confetti</h1>
+      <p class="module-subtitle">How one listener handles every button in the app — and why the swoosh sounds so satisfying.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: Event delegation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">One guard for the whole building</h2>
+        <p>Tab Out has dozens of buttons — close group, close single tab, save for later, close duplicates, expand overflow. Naively, you'd put a <span class="term" data-definition="An event listener is a piece of code that waits for something to happen (a click, a keypress, a scroll) and then runs when it does. It is attached to a specific element on the page.">event listener</span> on every single button. Tab Out doesn't — it uses one listener on the entire document.</p>
+        <p>This pattern is called <strong>event delegation</strong>. Think of it like building security: instead of a guard at every door, there's one guard in the lobby who watches everyone who walks in and checks their badge.</p>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Event delegation — why it matters for you</strong>
+            <p>Since Tab Out generates card HTML dynamically (new buttons appear whenever tabs are read), you can't attach listeners to buttons that don't exist yet. Event delegation solves this: the listener is on the document, which always exists. When you describe interactive UIs to AI, say "use event delegation so listeners survive dynamic content re-renders."</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: Chat animation — what happens when you click "Close all" -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What happens when you click "Close all tabs"?</h2>
+        <p>Watch the conversation between you, the document listener, and the Chrome API when you click a close button.</p>
+
+        <div class="chat-window" id="chat-module4">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="user" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">👤</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">You</span>
+                <p>I click "Close all 5 tabs" on the GitHub card.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="1" data-sender="listener" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">👂</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">Document Listener</span>
+                <p>Click detected! Walking up the DOM tree... found data-action="close-domain-tabs" on the button. Handing off to the right handler.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="2" data-sender="appjs" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">🧠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">app.js</span>
+                <p>Got it. Looking up the group by domain ID, collecting the 5 tab URLs. Calling closeTabsByUrls()...</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="3" data-sender="chrome" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-5)">🌐</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-5)">Chrome API</span>
+                <p>chrome.tabs.remove() received. Closing tab IDs 101, 102, 103, 104, 105... done.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="4" data-sender="appjs" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">🧠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">app.js</span>
+                <p>Playing the swoosh sound, animating the card out, shooting confetti. Done.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="5" data-sender="user" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">👤</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">You</span>
+                <p>*satisfying swoosh* The card is gone. Feels great.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" id="chat-module4-typing" style="display:none">
+            <div class="chat-avatar" id="chat-module4-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">Next Message</button>
+            <button class="btn chat-all-btn">Play All</button>
+            <button class="btn chat-reset-btn">Replay</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: The event handler code translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The single click handler — decoded</h2>
+        <p>One <span class="term" data-definition="A function is a named block of code that runs when called. An async function is one that can pause and wait for slow operations (like asking Chrome to close tabs) without freezing the rest of the page.">async function</span> handles every button click in Tab Out. Here is how it decides what to do.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">document</span>.<span class="code-function">addEventListener</span>(<span class="code-string">'click'</span>, <span class="code-keyword">async</span> (e) => {</span>
+<span class="code-line">  <span class="code-keyword">const</span> actionEl = e.target.<span class="code-function">closest</span>(<span class="code-string">'[data-action]'</span>);</span>
+<span class="code-line">  <span class="code-keyword">if</span> (!actionEl) <span class="code-keyword">return</span>;</span>
+<span class="code-line">  <span class="code-keyword">const</span> action = actionEl.dataset.action;</span>
+<span class="code-line">  <span class="code-keyword">if</span> (action === <span class="code-string">'close-domain-tabs'</span>) {</span>
+<span class="code-line">    <span class="code-comment">/* ... close all tabs in group */</span></span>
+<span class="code-line">  }</span>
+<span class="code-line">  <span class="code-keyword">if</span> (action === <span class="code-string">'close-single-tab'</span>) {</span>
+<span class="code-line">    <span class="code-comment">/* ... close just one tab */</span></span>
+<span class="code-line">  }</span>
+<span class="code-line">});</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Listen for ANY click anywhere in the document.</p>
+              <p class="tl">Walk up the DOM from where the user clicked, looking for an element with a "data-action" label.</p>
+              <p class="tl">If we found nothing with a data-action label, this click isn't meant for us — ignore it.</p>
+              <p class="tl">Read the action name from the element's data attribute.</p>
+              <p class="tl">If the action is "close all tabs in a domain group"...</p>
+              <p class="tl">...run the close-group logic.</p>
+              <p class="tl">If the action is "close just this one tab"...</p>
+              <p class="tl">...run the single-tab-close logic.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: The swoosh sound — Web Audio API -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How the swoosh sound is made — from scratch</h2>
+        <p>Tab Out plays a sound when you close tabs, but there is no MP3 file anywhere in the codebase. The sound is <em>generated mathematically</em> using the <span class="term" data-definition="The Web Audio API is a built-in browser tool for creating and shaping sound programmatically. It works like a modular synthesizer: you connect audio nodes together in a chain, each one shaping the sound, and pipe the result to your speakers.">Web Audio API</span> — every time, in real time.</p>
+        <p>Think of it like the difference between playing a recording of a piano versus simulating the physics of a piano string. Tab Out does the latter.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> ctx = <span class="code-keyword">new</span> AudioContext();</span>
+<span class="code-line"><span class="code-keyword">const</span> buffer = ctx.<span class="code-function">createBuffer</span>(<span class="code-number">1</span>, ctx.sampleRate * <span class="code-number">0.25</span>, ctx.sampleRate);</span>
+<span class="code-line"><span class="code-keyword">const</span> data = buffer.<span class="code-function">getChannelData</span>(<span class="code-number">0</span>);</span>
+<span class="code-line"><span class="code-keyword">for</span> (<span class="code-keyword">let</span> i = <span class="code-number">0</span>; i < data.length; i++) {</span>
+<span class="code-line">  <span class="code-keyword">const</span> pos = i / data.length;</span>
+<span class="code-line">  <span class="code-keyword">const</span> env = pos < <span class="code-number">0.1</span> ? pos / <span class="code-number">0.1</span> : Math.<span class="code-function">pow</span>(<span class="code-number">1</span> - (pos - <span class="code-number">0.1</span>) / <span class="code-number">0.9</span>, <span class="code-number">1.5</span>);</span>
+<span class="code-line">  data[i] = (Math.<span class="code-function">random</span>() * <span class="code-number">2</span> - <span class="code-number">1</span>) * env;</span>
+<span class="code-line">}</span>
+<span class="code-line"><span class="code-keyword">const</span> filter = ctx.<span class="code-function">createBiquadFilter</span>();</span>
+<span class="code-line">filter.frequency.<span class="code-function">setValueAtTime</span>(<span class="code-number">4000</span>, t);</span>
+<span class="code-line">filter.frequency.<span class="code-function">exponentialRampToValueAtTime</span>(<span class="code-number">400</span>, t + <span class="code-number">0.25</span>);</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Open an audio processing context (like turning on the synthesizer).</p>
+              <p class="tl">Create 0.25 seconds of blank audio memory — a canvas for our sound.</p>
+              <p class="tl">Get access to the raw audio samples in that memory.</p>
+              <p class="tl">Loop through every single audio sample (there are thousands).</p>
+              <p class="tl">Calculate how far through the sound we are (0 = start, 1 = end).</p>
+              <p class="tl">Build an envelope shape: ramp UP fast in the first 10%, then fade out smoothly. This gives the "whoosh" feel.</p>
+              <p class="tl">Fill each sample with random noise, shaped by that envelope.</p>
+              <p class="tl">Create a frequency filter (like a tone knob on a stereo).</p>
+              <p class="tl">Start the filter at 4000Hz (high, bright, airy)...</p>
+              <p class="tl">...and sweep it down to 400Hz over 0.25 seconds. This is the "swoosh" — high to low.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info animate-in">
+          <div class="callout-icon">🎵</div>
+          <div class="callout-content">
+            <strong class="callout-title">Sound as math — a transferable superpower</strong>
+            <p>The Web Audio API is available in every browser. Any web app you build — not just extensions — can generate custom sounds without audio files. Notification sounds, game audio, UI feedback — all doable in pure JavaScript. Next time you need a sound effect, ask your AI: "generate this using the Web Audio API, no audio files."</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Quick check</h2>
+
+        <div class="quiz-container" id="quiz-module4">
+          <div class="quiz-question-block"
+               data-correct="opt-b"
+               data-explanation-right="Event delegation is exactly the right tool here. You put one listener on the container, and use a data attribute (like data-action='add-to-cart') to distinguish which action to take. This works even as products are dynamically loaded — new buttons automatically work because the container already has the listener."
+               data-explanation-wrong="Adding a listener to every button sounds right but breaks as soon as the page adds new products dynamically — those new buttons won't have listeners. Event delegation is the right pattern for dynamic content.">
+            <h3 class="quiz-question">You are building a product page where users can click "Add to Cart" on any item. New products load dynamically as the user scrolls. What pattern should you use for the button interactions?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Attach a click listener to every "Add to Cart" button individually when the page loads.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>One click listener on the product list container, checking data-action to route to the right handler.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Re-scan and re-attach listeners every time new products load.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="opt-c"
+               data-explanation-right="The data-action attribute is the routing mechanism. The single document listener reads it to know which handler to call. This is the whole point of the pattern — data attributes carry the intent, the listener reads the intent."
+               data-explanation-wrong="The class names are for styling, not routing. The document listener uses data-action attributes (like data-action='close-domain-tabs') to decide which handler to call. That is the mechanism that makes one listener serve many purposes.">
+            <h3 class="quiz-question">In Tab Out, how does the single document-level click listener know whether the user clicked "close all tabs" vs "save for later"?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It reads the button's CSS class name to figure out the intent.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>There are actually multiple listeners, one per action type.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It walks up the DOM from the click target looking for a data-action attribute.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

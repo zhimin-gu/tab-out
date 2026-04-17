@@ -1,0 +1,148 @@
+<section class="module" id="module-3" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">How Tabs Get Organized</h1>
+      <p class="module-subtitle">The sorting algorithm that turns a chaotic list of URLs into clean, grouped domain cards.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The raw problem -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Chrome gives you a flat list. Tab Out makes it useful.</h2>
+        <p>When app.js asks Chrome for your open tabs, it gets back a flat pile of objects — every tab in every window, in no particular order. Imagine dumping 40 tabs on the floor.</p>
+        <p>The grouping logic in app.js is like a very fast librarian: it sorts everything by domain in milliseconds, with two special rules that make Tab Out genuinely useful.</p>
+
+        <div class="pattern-cards stagger-children animate-in">
+          <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-info-light)">🏠</div>
+            <h4 class="pattern-title">Landing Pages get their own group</h4>
+            <p class="pattern-desc">Gmail inbox, Twitter home, YouTube home — these "homepage" tabs are pulled out into their own "Homepages" card, separate from your actual work tabs on those same sites.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-success-light)">🔗</div>
+            <h4 class="pattern-title">Custom groups let you merge domains</h4>
+            <p class="pattern-desc">You can configure rules to group related domains together — like merging all Notion subdomains into one card. Defined in a personal config file that isn't shared.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: The grouping code translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The heart of the grouping logic</h2>
+        <p>This is the loop that sorts every open tab into its bucket. It runs inside <code style="font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-accent)">renderStaticDashboard()</code> in app.js.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">for</span> (<span class="code-keyword">const</span> tab <span class="code-keyword">of</span> realTabs) {</span>
+<span class="code-line">  <span class="code-keyword">try</span> {</span>
+<span class="code-line">    <span class="code-keyword">if</span> (<span class="code-function">isLandingPage</span>(tab.url)) {</span>
+<span class="code-line">      landingTabs.<span class="code-function">push</span>(tab);</span>
+<span class="code-line">      <span class="code-keyword">continue</span>;</span>
+<span class="code-line">    }</span>
+<span class="code-line">    <span class="code-keyword">const</span> hostname = <span class="code-keyword">new</span> <span class="code-function">URL</span>(tab.url).hostname;</span>
+<span class="code-line">    <span class="code-keyword">if</span> (!groupMap[hostname]) {</span>
+<span class="code-line">      groupMap[hostname] = { <span class="code-property">domain</span>: hostname, <span class="code-property">tabs</span>: [] };</span>
+<span class="code-line">    }</span>
+<span class="code-line">    groupMap[hostname].tabs.<span class="code-function">push</span>(tab);</span>
+<span class="code-line">  } <span class="code-keyword">catch</span> { <span class="code-comment">/* skip malformed URLs */</span> }</span>
+<span class="code-line">}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Go through every real tab one by one.</p>
+              <p class="tl">Try to process it (some URLs are weird and will crash — catch those).</p>
+              <p class="tl">Is this a "homepage" URL (Gmail inbox, YouTube home, etc.)?</p>
+              <p class="tl">If yes, add it to the special landing-pages pile...</p>
+              <p class="tl">...and skip to the next tab.</p>
+              <p class="tl">Otherwise, extract the domain from the URL (e.g. "github.com" from a long URL).</p>
+              <p class="tl">If we haven't seen this domain before, create a new bucket for it.</p>
+              <p class="tl">Either way, add this tab to that domain's bucket.</p>
+              <p class="tl">If the URL is broken, quietly skip it.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">This pattern is called "bucketing"</strong>
+            <p>Sorting items into named buckets is one of the most common patterns in programming. You've seen it in analytics (sessions grouped by country), in finance (transactions grouped by category), and in email clients (messages grouped by sender). Whenever you need to transform a flat list into groups, reach for this pattern.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: isLandingPage code translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How it knows "this is a homepage"</h2>
+        <p>The <code style="font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-accent)">isLandingPage()</code> <span class="term" data-definition="A function is a named block of code that performs a specific task. You call it by name, it runs, and it gives you back a result. Think of it like a vending machine — you press B3 (the function name), it does its thing, and out comes a result.">function</span> checks each URL against a list of known homepage patterns. It has to be specific — closing "Gmail inbox" shouldn't also close threads you have open in Gmail.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> LANDING_PAGE_PATTERNS = [</span>
+<span class="code-line">  { <span class="code-property">hostname</span>: <span class="code-string">'mail.google.com'</span>, <span class="code-property">test</span>: (p, h) =></span>
+<span class="code-line">      !h.<span class="code-function">includes</span>(<span class="code-string">'#inbox/'</span>) && !h.<span class="code-function">includes</span>(<span class="code-string">'#sent/'</span>) },</span>
+<span class="code-line">  { <span class="code-property">hostname</span>: <span class="code-string">'x.com'</span>, <span class="code-property">pathExact</span>: [<span class="code-string">'/home'</span>] },</span>
+<span class="code-line">  { <span class="code-property">hostname</span>: <span class="code-string">'github.com'</span>, <span class="code-property">pathExact</span>: [<span class="code-string">'/'</span>] },</span>
+<span class="code-line">];</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">A list of "these are homepage URLs" rules.</p>
+              <p class="tl">Rule 1: Gmail — it IS a homepage, UNLESS the URL contains an email thread ID (those are content, not the inbox).</p>
+              <p class="tl">Rule 2: X.com — only the /home path is the homepage. Profiles and posts are not.</p>
+              <p class="tl">Rule 3: GitHub — only the root "/" is the homepage. Repos and issues are content.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Drag and Drop — match files to responsibilities -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Match each concept to what it means</h2>
+        <p>Drag each term to its correct description. This tests whether you understood what you just read.</p>
+
+        <div class="dnd-container" id="dnd-module3">
+          <div class="dnd-chips">
+            <div class="dnd-chip" draggable="true" data-answer="hostname">hostname</div>
+            <div class="dnd-chip" draggable="true" data-answer="groupmap">groupMap</div>
+            <div class="dnd-chip" draggable="true" data-answer="landing">landingTabs</div>
+            <div class="dnd-chip" draggable="true" data-answer="realTabs">realTabs</div>
+          </div>
+          <div class="dnd-zones">
+            <div class="dnd-zone" data-correct="realTabs">
+              <p class="dnd-zone-label">The filtered list of tabs — no chrome:// pages, no extension pages, only real websites.</p>
+              <div class="dnd-zone-target">Drop here</div>
+            </div>
+            <div class="dnd-zone" data-correct="landing">
+              <p class="dnd-zone-label">The pile of inbox/homepage tabs that get their own "Homepages" card.</p>
+              <div class="dnd-zone-target">Drop here</div>
+            </div>
+            <div class="dnd-zone" data-correct="hostname">
+              <p class="dnd-zone-label">The domain part of a URL — e.g. "github.com" from "https://github.com/user/repo/issues/42".</p>
+              <div class="dnd-zone-target">Drop here</div>
+            </div>
+            <div class="dnd-zone" data-correct="groupmap">
+              <p class="dnd-zone-label">The collection of buckets — one per domain — that accumulates tabs as the loop runs.</p>
+              <div class="dnd-zone-target">Drop here</div>
+            </div>
+          </div>
+          <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3)">
+            <button class="btn btn-primary" onclick="checkDnD('dnd-module3')">Check Matches</button>
+            <button class="btn" onclick="resetDnD('dnd-module3')">Reset</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,174 @@
+<section class="module" id="module-1" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">The Magic of New Tab</h1>
+      <p class="module-subtitle">What Tab Out does, why it exists, and what happens the moment you open a new tab.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: What is Tab Out? -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">You built something pretty clever</h2>
+        <p>Tab Out is a <span class="term" data-definition="A Chrome extension is a small program that runs inside your Chrome browser and can modify how Chrome looks or behaves. Think of it like a plugin or add-on — it lives in the browser, not on a website.">Chrome extension</span> that replaces your boring new tab page with a living dashboard of everything you have open right now — grouped neatly by website, with one-click controls to close entire domains, flag duplicates, and save tabs for later.</p>
+        <p>Most people lose track of tabs the way they lose track of Post-it notes. Tab Out makes the chaos visible and manageable.</p>
+
+        <div class="pattern-cards stagger-children animate-in">
+          <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-accent-light)">🗂️</div>
+            <h4 class="pattern-title">Groups by domain</h4>
+            <p class="pattern-desc">All your GitHub tabs in one card. All your YouTube tabs in another. No more hunting.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-info-light)">🔇</div>
+            <h4 class="pattern-title">Swoosh &amp; confetti</h4>
+            <p class="pattern-desc">Closing a group plays a satisfying sound and bursts confetti. Closing tabs has never felt so good.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top-color: var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-success-light)">📌</div>
+            <h4 class="pattern-title">Save for later</h4>
+            <p class="pattern-desc">Bookmark a tab to a checklist before closing it. No server, no account — stored right in your browser.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: The magic moment — data flow animation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What happens when you open a new tab?</h2>
+        <p>From the moment you press <strong>⌘T</strong>, a tiny chain of events fires in milliseconds. Click through each step to see who does what.</p>
+
+        <div class="flow-animation" data-steps='[
+          {"highlight":"flow-actor-1","label":"You press Cmd+T. Chrome opens a new tab."},
+          {"highlight":"flow-actor-2","label":"Chrome checks manifest.json — Tab Out declared this page as the new tab override, so it loads index.html instead of the default blank page.","packet":true,"from":"actor-1","to":"actor-2"},
+          {"highlight":"flow-actor-3","label":"index.html loads style.css (the look) and app.js (the brain).","packet":true,"from":"actor-2","to":"actor-3"},
+          {"highlight":"flow-actor-4","label":"app.js calls chrome.tabs.query() — asking Chrome for a list of every open tab across all windows.","packet":true,"from":"actor-3","to":"actor-4"},
+          {"highlight":"flow-actor-4","label":"Chrome replies with the full tab list: URLs, titles, window IDs."},
+          {"highlight":"flow-actor-3","label":"app.js groups the tabs by domain, builds the HTML cards, and injects them into the page.","packet":true,"from":"actor-4","to":"actor-3"},
+          {"highlight":"flow-actor-1","label":"You see your tabs, beautifully organized. The whole thing took under 50ms."}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon">👤</div>
+              <span>You</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon">📋</div>
+              <span>manifest.json</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon">🧠</div>
+              <span>app.js</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon">🌐</div>
+              <span>Chrome API</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+          <div class="flow-step-label" id="flow-label">Click "Next Step" to begin</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">Next Step →</button>
+            <button class="btn flow-reset-btn">Restart</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: Why no server? -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">100% local — no server, no account</h2>
+        <p>Most apps you build need a server running somewhere in the cloud. Tab Out has zero backend. It talks directly to <span class="term" data-definition="An API (Application Programming Interface) is a set of rules that lets one piece of software talk to another. Chrome exposes APIs that let extensions read your tabs, store data, and more — like a set of pre-built tools Chrome hands to the extension.">Chrome's built-in APIs</span> to do everything.</p>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Key Insight: Not every app needs a server</strong>
+            <p>Browser extensions live inside Chrome and get special privileges — they can read tabs, store data, and modify pages without ever touching the internet. This makes them fast, private, and free to run. When you ask an AI to build your next tool, ask yourself: "Does this actually need a backend, or can it run entirely in the browser?"</p>
+          </div>
+        </div>
+
+        <div class="step-cards animate-in">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Read open tabs</strong>
+              <p>Via <code style="font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-accent)">chrome.tabs.query()</code> — Chrome hands over the full tab list instantly.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Save data between sessions</strong>
+              <p>Via <code style="font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-accent)">chrome.storage.local</code> — a tiny key-value store built into Chrome, no database needed.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Play sounds</strong>
+              <p>Via the <span class="term" data-definition="The Web Audio API is a set of tools built into every browser that lets you create and manipulate sound programmatically — without needing audio files. Tab Out uses it to generate the swoosh sound from scratch using math.">Web Audio API</span> — generates the swoosh sound mathematically, no MP3 files needed.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Quick check</h2>
+
+        <div class="quiz-container" id="quiz-module1">
+          <div class="quiz-question-block"
+               data-correct="opt-b"
+               data-explanation-right="Chrome loads the extension page instead of its own blank new-tab page. manifest.json is what tells Chrome to do the swap — it declares Tab Out as the new-tab override."
+               data-explanation-wrong="The extension page does load, but it replaces the blank page entirely — it does not sit alongside it. Try again and think about what manifest.json declares.">
+            <h3 class="quiz-question">When you press ⌘T in Chrome with Tab Out installed, what actually happens?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Chrome opens its default new tab page, and Tab Out injects itself on top of it.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Chrome loads Tab Out's index.html instead of its own blank new tab page.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Tab Out polls a remote server for your tab data and renders the response.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="opt-b"
+               data-explanation-right="Exactly — chrome.storage.local is a built-in browser database, no server required. This is a common pattern in extensions: use browser-native storage instead of spinning up a backend."
+               data-explanation-wrong="Tab Out has no server or cloud database. The &quot;Saved for Later&quot; data lives entirely in the browser via chrome.storage.local. This is what keeps it free and private.">
+            <h3 class="quiz-question">You want to add a &quot;notes&quot; feature to Tab Out where users can jot down a quick note per domain. Where would the notes live?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="opt-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A cloud database you set up on a server somewhere.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>chrome.storage.local — the same browser-native storage already used by the extension.</span>
+              </button>
+              <button class="quiz-option" data-value="opt-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A text file on the user's desktop that the extension reads and writes.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
