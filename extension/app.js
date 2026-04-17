@@ -1227,10 +1227,10 @@ document.addEventListener('click', async (e) => {
     const tabUrl = actionEl.dataset.tabUrl;
     if (!tabUrl) return;
 
-    // Close the tab in Chrome directly
+    // Close ALL copies of this tab (handles duplicates too)
     const allTabs = await chrome.tabs.query({});
-    const match   = allTabs.find(t => t.url === tabUrl);
-    if (match) await chrome.tabs.remove(match.id);
+    const matches = allTabs.filter(t => t.url === tabUrl);
+    if (matches.length > 0) await chrome.tabs.remove(matches.map(t => t.id));
     await fetchOpenTabs();
 
     playCloseSound();
