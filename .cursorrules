@@ -1,0 +1,19 @@
+# Project Configuration (Matt Pocock Skills Scaffolding)
+
+This document configures the AI agent's behavior based on the `setup-matt-pocock-skills` workflow.
+
+## 1. Issue Tracking
+- **System:** Local markdown files
+- **Location:** `TODO.md`
+- **Instructions:** Always read `TODO.md` to see what issues are available. When starting work, move an issue from `ready-for-agent` to `in-progress`. When finishing, move it to `done`. Do not start on issues labeled `needs-triage` without user approval.
+
+## 2. Triage Labels
+The following vocabulary is used to organize issues in `TODO.md`:
+- `needs-triage`: Requires user definition.
+- `ready-for-agent`: Actionable tasks.
+- `in-progress`: Currently being handled.
+- `done`: Finished tasks.
+
+## 3. Domain Documentation
+- **Location:** `CONTEXT.md`
+- **Instructions:** Before making architectural decisions or proposing new features, read `CONTEXT.md`. If a new domain concept or architectural pattern is established, update `CONTEXT.md` to persist that knowledge for future sessions.

@@ -208,6 +208,25 @@ header {
   background: var(--warm-gray);
 }
 
+.close-all-dupes-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(200, 113, 58, 0.3);
+  background: rgba(200, 113, 58, 0.04);
+  color: var(--accent-amber);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.close-all-dupes-btn:hover {
+  background: rgba(200, 113, 58, 0.1);
+  border-color: var(--accent-amber);
+}
+
 .section-count {
   font-size: 12px;
   color: var(--muted);

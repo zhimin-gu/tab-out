@@ -1147,6 +1147,25 @@ async function renderStaticDashboard() {
   const openTabsMissionsEl   = document.getElementById('openTabsMissions');
   const openTabsSectionCount = document.getElementById('openTabsSectionCount');
   const openTabsSectionTitle = document.getElementById('openTabsSectionTitle');
+  const closeAllDupesBtn     = document.getElementById('closeAllDupesBtn');
+
+  let globalDupeCount = 0;
+  const globalUrlCounts = {};
+  for (const tab of realTabs) {
+    globalUrlCounts[tab.url] = (globalUrlCounts[tab.url] || 0) + 1;
+  }
+  for (const count of Object.values(globalUrlCounts)) {
+    if (count > 1) globalDupeCount += (count - 1);
+  }
+
+  if (closeAllDupesBtn) {
+    if (globalDupeCount > 0) {
+      closeAllDupesBtn.style.display = 'inline-block';
+      closeAllDupesBtn.textContent = `Close ${globalDupeCount} duplicate${globalDupeCount !== 1 ? 's' : ''}`;
+    } else {
+      closeAllDupesBtn.style.display = 'none';
+    }
+  }
 
   if (domainGroups.length > 0 && openTabsSection) {
     if (openTabsSectionTitle) openTabsSectionTitle.textContent = 'Open tabs';
@@ -1409,6 +1428,29 @@ document.addEventListener('click', async (e) => {
     }
 
     showToast('Closed duplicates, kept one copy each');
+    return;
+  }
+
+  // ---- Close ALL global duplicates ----
+  if (action === 'close-all-global-dupes') {
+    const allUrls = openTabs
+      .filter(t => t.url && !t.url.startsWith('chrome') && !t.url.startsWith('about:'))
+      .map(t => t.url);
+    
+    const urlCounts = {};
+    for (const url of allUrls) {
+      urlCounts[url] = (urlCounts[url] || 0) + 1;
+    }
+    const dupes = Object.entries(urlCounts).filter(([, c]) => c > 1).map(([u]) => u);
+    
+    if (dupes.length > 0) {
+      await closeDuplicateTabs(dupes, true);
+      playCloseSound();
+      showToast('Closed all global duplicates');
+      actionEl.style.display = 'none';
+      await fetchOpenTabs();
+      await renderDashboard();
+    }
     return;
   }
 
